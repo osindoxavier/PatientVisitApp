@@ -1,7 +1,8 @@
-package com.intellisoft.patientvisit.data.repository
+package com.intellisoft.patientvisit.data.repository.patient
 
-import com.intellisoft.patientvisit.data.local.entity.PatientEntity
-import com.intellisoft.patientvisit.data.remote.dto.PatientRegistrationDto
+import com.intellisoft.patientvisit.data.local.entity.patient.PatientEntity
+import com.intellisoft.patientvisit.data.remote.dto.patient.request.PatientRegistrationDto
+import com.intellisoft.patientvisit.data.remote.dto.patient.response.PatientRegistrationResponseDto
 
 /**
  * Defines patient-related data operations (both local & remote).
@@ -13,7 +14,7 @@ interface PatientRepository {
     suspend fun registerPatientLocal(patient: PatientEntity)
 
     /** Submit patient registration data to the backend service */
-    suspend fun registerPatientRemote(dto: PatientRegistrationDto): Boolean
+    suspend fun registerPatientRemote(dto: PatientRegistrationDto): PatientRegistrationResponseDto
 
     /** Fetch all registered patients from the local cache */
     suspend fun getAllPatients(): List<PatientEntity>

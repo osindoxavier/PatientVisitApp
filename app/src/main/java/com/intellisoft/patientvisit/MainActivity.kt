@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
-import com.intellisoft.patientvisit.ui.navigation.auth.AuthNavGraph
+import com.intellisoft.patientvisit.ui.navigation.AppNavGraph
 import com.intellisoft.patientvisit.ui.theme.PatientVisitAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
             PatientVisitAppTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    AuthNavGraph(navController = navController)
+                    AppNavGraph(navController = navController)
                 }
             }
         }

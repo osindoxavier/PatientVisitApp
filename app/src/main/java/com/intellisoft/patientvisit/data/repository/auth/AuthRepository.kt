@@ -1,4 +1,4 @@
-package com.intellisoft.patientvisit.data.repository
+package com.intellisoft.patientvisit.data.repository.auth
 
 import com.intellisoft.patientvisit.data.remote.dto.auth.request.LoginRequestDto
 import com.intellisoft.patientvisit.data.remote.dto.auth.request.RegisterRequestDto

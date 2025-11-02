@@ -1,8 +1,8 @@
 package com.intellisoft.patientvisit.di
 
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.intellisoft.patientvisit.data.repository.AuthRepository
-import com.intellisoft.patientvisit.data.repository.AuthRepositoryImpl
+import com.intellisoft.patientvisit.data.repository.auth.AuthRepository
+import com.intellisoft.patientvisit.data.repository.auth.AuthRepositoryImpl
 import com.intellisoft.patientvisit.ui.auth.login.AuthViewModel
 import com.intellisoft.patientvisit.ui.auth.register.RegisterViewModel
 import org.koin.core.module.dsl.viewModel

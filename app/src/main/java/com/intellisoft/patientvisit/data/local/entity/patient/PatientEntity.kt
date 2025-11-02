@@ -1,4 +1,4 @@
-package com.intellisoft.patientvisit.data.local.entity
+package com.intellisoft.patientvisit.data.local.entity.patient
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

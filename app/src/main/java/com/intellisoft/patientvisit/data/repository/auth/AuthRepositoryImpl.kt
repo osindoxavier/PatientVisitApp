@@ -1,4 +1,4 @@
-package com.intellisoft.patientvisit.data.repository
+package com.intellisoft.patientvisit.data.repository.auth
 
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -68,9 +68,13 @@ class AuthRepositoryImpl(
             body
         } catch (e: Exception) {
             Log.e(TAG, "❌ registerUser: -> ${e.message}")
-            RegisterResponseDto(message = e.message ?: "Register User error", success = false, code = 500)
+            RegisterResponseDto(
+                message = e.message ?: "Register User error",
+                success = false,
+                code = 500
+            )
         }
-        
+
     }
 
     override suspend fun saveAuthToken(token: String) {

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.intellisoft.patientvisit.data.remote.dto.auth.request.RegisterRequestDto
-import com.intellisoft.patientvisit.data.repository.AuthRepository
+import com.intellisoft.patientvisit.data.repository.auth.AuthRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

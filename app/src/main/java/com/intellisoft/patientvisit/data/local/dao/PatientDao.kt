@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.intellisoft.patientvisit.data.local.entity.PatientEntity
+import com.intellisoft.patientvisit.data.local.entity.patient.PatientEntity
 
 @Dao
 interface PatientDao {

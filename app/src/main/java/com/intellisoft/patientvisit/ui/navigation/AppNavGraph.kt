@@ -1,4 +1,4 @@
-package com.intellisoft.patientvisit.ui.navigation.auth
+package com.intellisoft.patientvisit.ui.navigation
 
 
 import android.widget.Toast
@@ -22,14 +22,16 @@ import com.intellisoft.patientvisit.ui.auth.login.AuthViewModel
 import com.intellisoft.patientvisit.ui.auth.register.RegisterEffect
 import com.intellisoft.patientvisit.ui.auth.register.RegisterScreen
 import com.intellisoft.patientvisit.ui.auth.register.RegisterViewModel
+import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationEffect
+import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationScreen
+import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationViewModel
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun AuthNavGraph(
-    navController: NavHostController,
-    onLoginSuccess: () -> Unit = {}
+fun AppNavGraph(
+    navController: NavHostController
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -39,13 +41,13 @@ fun AuthNavGraph(
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = AuthDestination.Login.route
+            startDestination = AppDestination.Login.route
         ) {
 
             // ------------------------------
             // LOGIN SCREEN
             // ------------------------------
-            composable(AuthDestination.Login.route) {
+            composable(AppDestination.Login.route) {
                 val viewModel: AuthViewModel = koinViewModel()
                 val uiState by viewModel.state.collectAsStateWithLifecycle()
 
@@ -54,8 +56,8 @@ fun AuthNavGraph(
                     viewModel.effect.collectLatest { effect ->
                         when (effect) {
                             is AuthEffect.NavigateToHome -> {
-                                onLoginSuccess()
                                 snackbarHostState.showSnackbar("Login successfull")
+                                navController.navigate(AppDestination.PatientRegistration.route)
                             }
 
                             is AuthEffect.ShowToast -> {
@@ -71,7 +73,7 @@ fun AuthNavGraph(
                     onForgotPassword = {},
                     onEvent = viewModel::onEvent,
                     onSignUp = {
-                        navController.navigate(AuthDestination.Register.route)
+                        navController.navigate(AppDestination.Register.route)
                     }
                 )
             }
@@ -79,7 +81,7 @@ fun AuthNavGraph(
             // ------------------------------
             // REGISTER SCREEN
             // ------------------------------
-            composable(AuthDestination.Register.route) {
+            composable(AppDestination.Register.route) {
 
                 val viewModel: RegisterViewModel = koinViewModel()
 
@@ -97,7 +99,7 @@ fun AuthNavGraph(
 
                             is RegisterEffect.NavigateToLogin -> {
                                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
-                                navController.navigate(AuthDestination.Login.route)
+                                navController.navigate(AppDestination.Login.route)
                             }
                         }
                     }
@@ -108,10 +110,44 @@ fun AuthNavGraph(
                     uiState = uiState,
                     onEvent = viewModel::onEvent,
                     onNavigateToLogin = {
-                        navController.navigate(AuthDestination.Login.route)
+                        navController.navigate(AppDestination.Login.route)
                     }
                 )
 
+            }
+
+            // --------------------
+            // PATIENT REGISTRATION
+            // --------------------
+            composable(AppDestination.PatientRegistration.route) {
+                val patientViewModel: PatientRegistrationViewModel = koinViewModel()
+
+
+                val context = LocalContext.current
+
+                val uiState by patientViewModel.state.collectAsStateWithLifecycle()
+
+                // Handle one-time side effects
+                LaunchedEffect(Unit) {
+                    patientViewModel.effect.collectLatest { effect ->
+                        when (effect) {
+                            is PatientRegistrationEffect.ShowToast -> {
+                                snackbarHostState.showSnackbar(effect.message)
+                            }
+
+                            is PatientRegistrationEffect.NavigateToVitals -> {
+                                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+//                                navController.navigate(AppDestination.Login.route)
+                            }
+                        }
+                    }
+                }
+
+                PatientRegistrationScreen(
+                    modifier = Modifier.padding(padding),
+                    uiState = uiState,
+                    onEvent = patientViewModel::onEvent
+                )
             }
 
         }
