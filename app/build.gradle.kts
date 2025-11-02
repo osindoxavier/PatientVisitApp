@@ -8,6 +8,9 @@ plugins {
 
     // KSP (Kotlin Symbol Processing) - preferred over kapt for Room
     id("com.google.devtools.ksp")
+
+    id("org.jetbrains.kotlin.plugin.compose")
+
 }
 
 android {
@@ -25,7 +28,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Dev server (can point to staging)
+            buildConfigField("String", "BASE_URL", "\"https://patientvisitapis.intellisoftkenya.com/api/\"")
+        }
         release {
+            // Production server (same or different)
+            buildConfigField("String", "BASE_URL", "\"https://patientvisitapis.intellisoftkenya.com/api/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -43,6 +52,7 @@ android {
     buildFeatures {
         compose = true
     }
+    android.buildFeatures.buildConfig = true
 }
 
 dependencies {
@@ -75,8 +85,16 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.logging)
 
+    // --- Koin Dependency Injection ---
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    //Material Icon
+    implementation(libs.androidx.material.icons.extended)
 
     // Testing
     testImplementation(libs.junit)

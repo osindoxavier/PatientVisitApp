@@ -16,4 +16,6 @@ plugins {
 
     // Google KSP plugin (for Room annotation processing)
     alias(libs.plugins.google.ksp) apply false
+
+    alias(libs.plugins.kotlin.compose.compiler)
 }
