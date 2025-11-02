@@ -2,7 +2,9 @@ package com.intellisoft.patientvisit.data.repository.patient
 
 import com.intellisoft.patientvisit.data.local.entity.patient.PatientEntity
 import com.intellisoft.patientvisit.data.remote.dto.patient.request.PatientRegistrationDto
+import com.intellisoft.patientvisit.data.remote.dto.patient.request.PatientsRequestDto
 import com.intellisoft.patientvisit.data.remote.dto.patient.response.PatientRegistrationResponseDto
+import com.intellisoft.patientvisit.data.remote.dto.patient.response.PatientResponseDto
 
 /**
  * Defines patient-related data operations (both local & remote).
@@ -24,6 +26,11 @@ interface PatientRepository {
 
     /** Get the most recently registered patient */
     suspend fun getLatestPatient(): PatientEntity?
+
+    /** Get a list of all registered patient */
+    suspend fun getPatientsList(
+        request: PatientsRequestDto
+    ): PatientResponseDto
 }
 
 

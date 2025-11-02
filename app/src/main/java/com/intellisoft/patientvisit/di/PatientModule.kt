@@ -2,6 +2,7 @@ package com.intellisoft.patientvisit.di
 
 import com.intellisoft.patientvisit.data.repository.patient.PatientRepository
 import com.intellisoft.patientvisit.data.repository.patient.PatientRepositoryImpl
+import com.intellisoft.patientvisit.ui.patient_list.PatientListViewModel
 import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -18,4 +19,5 @@ val patientModule = module {
 
     // --- ViewModel ---
     viewModel { PatientRegistrationViewModel(get()) }
+    viewModel { PatientListViewModel(get()) }
 }

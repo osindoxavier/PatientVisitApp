@@ -5,7 +5,9 @@ import com.intellisoft.patientvisit.data.local.dao.PatientDao
 import com.intellisoft.patientvisit.data.local.entity.patient.PatientEntity
 import com.intellisoft.patientvisit.data.remote.dto.auth.response.LoginResponseDto
 import com.intellisoft.patientvisit.data.remote.dto.patient.request.PatientRegistrationDto
+import com.intellisoft.patientvisit.data.remote.dto.patient.request.PatientsRequestDto
 import com.intellisoft.patientvisit.data.remote.dto.patient.response.PatientRegistrationResponseDto
+import com.intellisoft.patientvisit.data.remote.dto.patient.response.PatientResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
@@ -58,6 +60,25 @@ class PatientRepositoryImpl(
         }
     }
 
+
+    override suspend fun getPatientsList(request: PatientsRequestDto): PatientResponseDto {
+        return try {
+            val response = client.post("${baseUrl}visits/view") {
+                contentType(ContentType.Application.Json)
+                setBody(request)
+            }
+            Log.d(TAG, "📥 Response: ${response.bodyAsText()}")
+            val body: PatientResponseDto = response.body()
+            body
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ ${e.message}")
+            PatientResponseDto(
+                message = e.message ?: "Register User error",
+                success = false,
+                code = 500
+            )
+        }
+    }
 
     companion object {
         private const val TAG = "PatientRepositoryImpl"

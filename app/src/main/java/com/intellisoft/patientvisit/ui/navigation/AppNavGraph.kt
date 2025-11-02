@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.intellisoft.patientvisit.data.repository.patient.PatientListScreen
 import com.intellisoft.patientvisit.domain.model.AssessmentType
 import com.intellisoft.patientvisit.ui.assessment.AssessmentEffect
 import com.intellisoft.patientvisit.ui.assessment.VisitAssessmentScreen
@@ -26,6 +27,8 @@ import com.intellisoft.patientvisit.ui.auth.login.AuthViewModel
 import com.intellisoft.patientvisit.ui.auth.register.RegisterEffect
 import com.intellisoft.patientvisit.ui.auth.register.RegisterScreen
 import com.intellisoft.patientvisit.ui.auth.register.RegisterViewModel
+import com.intellisoft.patientvisit.ui.patient_list.PatientListEffect
+import com.intellisoft.patientvisit.ui.patient_list.PatientListViewModel
 import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationEffect
 import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationScreen
 import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationViewModel
@@ -212,7 +215,7 @@ fun AppNavGraph(
 
                             is AssessmentEffect.NavigateToSummary -> {
                                 Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-//                                navController.navigate(AppDestination.Login.route)
+                                navController.navigate(AppDestination.PatientsList.route)
                             }
                         }
                     }
@@ -245,7 +248,7 @@ fun AppNavGraph(
 
                             is AssessmentEffect.NavigateToSummary -> {
                                 Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-//                                navController.navigate(AppDestination.Login.route)
+                                navController.navigate(AppDestination.PatientsList.route)
                             }
                         }
                     }
@@ -256,6 +259,39 @@ fun AppNavGraph(
                     uiState = uiState,
                     onEvent = viewModel::onEvent,
                     type = AssessmentType.OVERWEIGHT
+                )
+            }
+
+
+            composable(AppDestination.PatientsList.route) {
+
+                val viewModel: PatientListViewModel = koinViewModel()
+
+
+                val context = LocalContext.current
+
+                val uiState by viewModel.state.collectAsStateWithLifecycle()
+
+                // Handle one-time side effects
+                LaunchedEffect(Unit) {
+                    viewModel.effect.collectLatest { effect ->
+                        when (effect) {
+
+                            is PatientListEffect.NavigateToPatientDetail -> {
+
+                            }
+
+                            is PatientListEffect.ShowToast -> {
+                                snackbarHostState.showSnackbar(effect.message)
+                            }
+                        }
+                    }
+                }
+
+                PatientListScreen(
+                    modifier = Modifier.padding(padding),
+                    uiState = uiState,
+                    onEvent = viewModel::onEvent
                 )
             }
 
