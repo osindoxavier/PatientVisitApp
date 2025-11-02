@@ -3,6 +3,7 @@ package com.intellisoft.patientvisit.ui.vitals
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -31,7 +32,7 @@ class VitalsViewModel(
     val state = _state.asStateFlow()
 
     // ✅ Patient ID stored as observable mutable state
-    var patientId by mutableStateOf(0)
+    var patientId by mutableIntStateOf(0)
         private set
 
     private val _effect = Channel<VitalsEffect>()

@@ -25,6 +25,10 @@ class VitalsRepositoryImpl(
         dao.insertVitals(vitals)
     }
 
+    override suspend fun getLatestVitals(patientId: String): VitalsEntity? {
+        return dao.getLatestVitals(patientId = patientId)
+    }
+
     override suspend fun saveVitalsRemote(dto: VitalsRequestDto): VitalsReponseDto {
         return try {
             val response = client.post("${baseUrl}vital/add") {

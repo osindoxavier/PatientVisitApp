@@ -6,5 +6,7 @@ import com.intellisoft.patientvisit.data.remote.dto.vital.response.VitalsReponse
 
 interface VitalsRepository {
     suspend fun saveVitalsLocal(vitals: VitalsEntity)
+
+    suspend fun getLatestVitals(patientId:String): VitalsEntity?
     suspend fun saveVitalsRemote(dto: VitalsRequestDto): VitalsReponseDto
 }

@@ -16,6 +16,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.intellisoft.patientvisit.domain.model.AssessmentType
+import com.intellisoft.patientvisit.ui.assessment.AssessmentEffect
+import com.intellisoft.patientvisit.ui.assessment.VisitAssessmentScreen
+import com.intellisoft.patientvisit.ui.assessment.VisitAssessmentViewModel
 import com.intellisoft.patientvisit.ui.auth.login.AuthEffect
 import com.intellisoft.patientvisit.ui.auth.login.AuthScreen
 import com.intellisoft.patientvisit.ui.auth.login.AuthViewModel
@@ -171,11 +175,12 @@ fun AppNavGraph(
 
                             is VitalsEffect.NavigateToGeneralAssessment -> {
                                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
-//                                navController.navigate(AppDestination.Login.route)
+                                navController.navigate(AppDestination.GeneralAssessment.route)
                             }
 
                             is VitalsEffect.NavigateToOverweightAssessment -> {
                                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                                navController.navigate(AppDestination.OverweightAssessment.route)
 
                             }
                         }
@@ -186,6 +191,71 @@ fun AppNavGraph(
                     modifier = Modifier.padding(padding),
                     uiState = uiState,
                     onEvent = viewModel::onEvent
+                )
+            }
+
+            composable(AppDestination.GeneralAssessment.route) {
+
+                val viewModel: VisitAssessmentViewModel = koinViewModel()
+
+                val context = LocalContext.current
+
+                val uiState by viewModel.state.collectAsStateWithLifecycle()
+
+                // Handle one-time side effects
+                LaunchedEffect(Unit) {
+                    viewModel.effect.collectLatest { effect ->
+                        when (effect) {
+                            is AssessmentEffect.ShowToast -> {
+                                snackbarHostState.showSnackbar(effect.message)
+                            }
+
+                            is AssessmentEffect.NavigateToSummary -> {
+                                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+//                                navController.navigate(AppDestination.Login.route)
+                            }
+                        }
+                    }
+                }
+
+                VisitAssessmentScreen(
+                    modifier = Modifier.padding(padding),
+                    uiState = uiState,
+                    onEvent = viewModel::onEvent,
+                    type = AssessmentType.GENERAL
+                )
+            }
+
+            composable(AppDestination.OverweightAssessment.route) {
+
+                val viewModel: VisitAssessmentViewModel = koinViewModel()
+
+
+                val context = LocalContext.current
+
+                val uiState by viewModel.state.collectAsStateWithLifecycle()
+
+                // Handle one-time side effects
+                LaunchedEffect(Unit) {
+                    viewModel.effect.collectLatest { effect ->
+                        when (effect) {
+                            is AssessmentEffect.ShowToast -> {
+                                snackbarHostState.showSnackbar(effect.message)
+                            }
+
+                            is AssessmentEffect.NavigateToSummary -> {
+                                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+//                                navController.navigate(AppDestination.Login.route)
+                            }
+                        }
+                    }
+                }
+
+                VisitAssessmentScreen(
+                    modifier = Modifier.padding(padding),
+                    uiState = uiState,
+                    onEvent = viewModel::onEvent,
+                    type = AssessmentType.OVERWEIGHT
                 )
             }
 
