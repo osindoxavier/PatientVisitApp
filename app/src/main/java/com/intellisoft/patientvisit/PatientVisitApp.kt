@@ -6,6 +6,7 @@ import com.intellisoft.patientvisit.di.dataStoreModule
 import com.intellisoft.patientvisit.di.databaseModule
 import com.intellisoft.patientvisit.di.networkModule
 import com.intellisoft.patientvisit.di.patientModule
+import com.intellisoft.patientvisit.di.vitalsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 
@@ -19,7 +20,8 @@ class PatientVisitApp : Application() {
         startKoin {
             androidContext(this@PatientVisitApp)
             modules(
-                networkModule, patientModule, databaseModule, dataStoreModule, authModule
+                networkModule, patientModule, databaseModule, dataStoreModule, authModule,
+                vitalsModule
             )
         }
     }

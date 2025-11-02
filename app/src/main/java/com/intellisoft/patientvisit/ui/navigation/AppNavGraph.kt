@@ -25,6 +25,9 @@ import com.intellisoft.patientvisit.ui.auth.register.RegisterViewModel
 import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationEffect
 import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationScreen
 import com.intellisoft.patientvisit.ui.patient_registration.PatientRegistrationViewModel
+import com.intellisoft.patientvisit.ui.vitals.VitalsEffect
+import com.intellisoft.patientvisit.ui.vitals.VitalsScreen
+import com.intellisoft.patientvisit.ui.vitals.VitalsViewModel
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
@@ -137,7 +140,7 @@ fun AppNavGraph(
 
                             is PatientRegistrationEffect.NavigateToVitals -> {
                                 Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
-//                                navController.navigate(AppDestination.Login.route)
+                                navController.navigate(AppDestination.Vitals.route)
                             }
                         }
                     }
@@ -147,6 +150,42 @@ fun AppNavGraph(
                     modifier = Modifier.padding(padding),
                     uiState = uiState,
                     onEvent = patientViewModel::onEvent
+                )
+            }
+            composable(AppDestination.Vitals.route) {
+
+                val viewModel: VitalsViewModel = koinViewModel()
+
+
+                val context = LocalContext.current
+
+                val uiState by viewModel.state.collectAsStateWithLifecycle()
+
+                // Handle one-time side effects
+                LaunchedEffect(Unit) {
+                    viewModel.effect.collectLatest { effect ->
+                        when (effect) {
+                            is VitalsEffect.ShowToast -> {
+                                snackbarHostState.showSnackbar(effect.message)
+                            }
+
+                            is VitalsEffect.NavigateToGeneralAssessment -> {
+                                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+//                                navController.navigate(AppDestination.Login.route)
+                            }
+
+                            is VitalsEffect.NavigateToOverweightAssessment -> {
+                                Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+
+                            }
+                        }
+                    }
+                }
+
+                VitalsScreen(
+                    modifier = Modifier.padding(padding),
+                    uiState = uiState,
+                    onEvent = viewModel::onEvent
                 )
             }
 

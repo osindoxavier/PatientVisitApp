@@ -17,4 +17,11 @@ interface PatientDao {
 
     @Query("SELECT * FROM patients ORDER BY registrationDate DESC")
     suspend fun getAllPatients(): List<PatientEntity>
+
+    /**
+     * Retrieves the most recently registered patient.
+     * Useful for pre-filling the vitals screen after registration.
+     */
+    @Query("SELECT * FROM patients ORDER BY id DESC LIMIT 1")
+    suspend fun getLatestPatient(): PatientEntity?
 }

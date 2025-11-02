@@ -21,4 +21,9 @@ interface PatientRepository {
 
     /** Find a patient by ID from the local database */
     suspend fun getPatientById(patientId: String): PatientEntity?
+
+    /** Get the most recently registered patient */
+    suspend fun getLatestPatient(): PatientEntity?
 }
+
+

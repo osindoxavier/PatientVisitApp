@@ -13,4 +13,6 @@ val databaseModule = module {
         ).build()
     }
     single { get<AppDatabase>().patientDao() }
+
+    single { get<AppDatabase>().vitalsDao() }
 }

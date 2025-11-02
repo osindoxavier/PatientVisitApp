@@ -35,6 +35,10 @@ class PatientRepositoryImpl(
     override suspend fun getPatientById(patientId: String): PatientEntity? =
         dao.getPatientById(patientId)
 
+    override suspend fun getLatestPatient(): PatientEntity? {
+        return dao.getLatestPatient()
+    }
+
     override suspend fun registerPatientRemote(dto: PatientRegistrationDto): PatientRegistrationResponseDto {
         return try {
             val response = client.post("${baseUrl}patients/register") {
